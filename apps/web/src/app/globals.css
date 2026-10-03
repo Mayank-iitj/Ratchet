@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0C0B16;
+  --color-panel: #14131F;
+  --color-raised: #1C1A2B;
+  --color-line: #2A2840;
+  --color-bone: #EDEBE6;
+  --color-mute: #9A97AD;
+  --color-faint: #6C6982;
+  --color-magenta: #E86AD6;
+  --color-violet: #6B3FD4;
+  --color-teal: #19C3B0;
+  --color-fail: #F0454B;
+  --color-pass: #3DBE7E;
+  --color-warn: #F2B84B;
+  --color-info: #6FA8FF;
+
+  --font-display: "Inter Tight", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+  --radius-control: 6px;
+  --radius-panel: 10px;
+  --ease-click: steps(3, end);
+  --dur-click: 140ms;
+}
+
+:root {
+  color-scheme: dark;
+  --background: var(--color-ink);
+  --foreground: var(--color-bone);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@font-face {
+  font-family: 'Mazzard H';
+  font-weight: 400;
+  font-style: normal;
+  src: url('https://db.onlinewebfonts.com/t/eb5b5ee332420add9a40ee988cb6ac37.woff2') format('woff2'),
+       url('https://db.onlinewebfonts.com/t/eb5b5ee332420add9a40ee988cb6ac37.woff') format('woff'),
+       url('https://db.onlinewebfonts.com/t/eb5b5ee332420add9a40ee988cb6ac37.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Mazzard H';
+  font-weight: 500;
+  font-style: normal;
+  src: url('https://db.onlinewebfonts.com/t/875fffdfa62169a0f131e90f37f1faf4.woff2') format('woff2'),
+       url('https://db.onlinewebfonts.com/t/875fffdfa62169a0f131e90f37f1faf4.woff') format('woff'),
+       url('https://db.onlinewebfonts.com/t/875fffdfa62169a0f131e90f37f1faf4.ttf') format('truetype');
+}
+
+@layer base {
+  html, body, * { font-family: 'Mazzard H', sans-serif; }
+}

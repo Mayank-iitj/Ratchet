@@ -1,0 +1,7 @@
+{
+  "name": "ratechet-workspace",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm -r dev"
+  }
+}

@@ -1,0 +1,1 @@
+{ "connection_oauth_github": { "scopes": "read:user user:email repo" } }
