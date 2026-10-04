@@ -22,7 +22,7 @@ class RunStatus(str, enum.Enum):
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(pgUUID(as_uuid=True), primary_key=True, default=uuid4)
+    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid4)
     github_id = Column(BigInteger, unique=True, nullable=False)
     login = Column(String, nullable=False)
     created_at = Column(DateTime(timezone=True), default=datetime.utcnow, nullable=False)
@@ -61,7 +61,7 @@ class Run(Base):
     idempotency_key = Column(String, unique=True)
     trace_redacted = Column(String, nullable=False)
     logs_redacted = Column(String)
-    redaction_counts = Column(JSONB, nullable=False, default=dict)
+    redaction_counts = Column(JSON, nullable=False, default=dict)
     harness = Column(JSON)
     cost_usd = Column(Numeric(8, 4), nullable=False, default=0)
     tokens_in = Column(Integer, nullable=False, default=0)
@@ -74,7 +74,7 @@ class Attempt(Base):
     __tablename__ = "attempts"
 
     id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid4)
-    run_id = Column(pgUUID(as_uuid=True), ForeignKey("runs.id", ondelete="CASCADE"), nullable=False)
+    run_id = Column(Uuid(as_uuid=True), ForeignKey("runs.id", ondelete="CASCADE"), nullable=False)
     n = Column(Integer, nullable=False)
     model = Column(String, nullable=False)
     test_path = Column(String, nullable=False)
