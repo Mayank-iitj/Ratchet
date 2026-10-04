@@ -23,6 +23,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.on_event("startup")
+async def startup_event():
+    from .database import engine
+    from . import models
+    async with engine.begin() as conn:
+        await conn.run_sync(models.Base.metadata.create_all)
+
 @app.get("/api/v1/healthz")
 async def healthz():
     return {"status": "ok"}
