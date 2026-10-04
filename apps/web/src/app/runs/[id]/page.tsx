@@ -94,7 +94,7 @@ export default async function RunDetail({ params }: { params: { id: string } }) 
              <div className="h-0.5 w-16 md:w-32 mx-4" style={{ background: 'linear-gradient(90deg, var(--color-violet), var(--color-teal))' }}></div>
              
              <div className="flex flex-col items-center">
-               <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: run.status !== 'queued' ? 'linear-gradient(90deg, var(--color-teal), #19C3B0)' : '' }} className={run.status === 'queued' ? 'border-2 border-mute' : ''}>
+               <div className={`w-8 h-8 rounded-full flex items-center justify-center ${run.status === 'queued' ? 'border-2 border-mute' : ''}`} style={{ background: run.status !== 'queued' ? 'linear-gradient(90deg, var(--color-teal), #19C3B0)' : '' }}>
                  {run.status !== 'queued' && <span className="text-ink text-xs font-bold">✓</span>}
                </div>
                <span className="text-bone text-xs mt-2 font-medium">Passes on fix</span>
