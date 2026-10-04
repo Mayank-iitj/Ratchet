@@ -9,6 +9,16 @@ from .database import get_db
 
 app = FastAPI(title="Ratchet API", version="1.0")
 
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins (e.g., Vercel, localhost)
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
+
 @app.get("/api/v1/healthz")
 async def healthz():
     return {"status": "ok"}
