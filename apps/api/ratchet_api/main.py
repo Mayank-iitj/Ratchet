@@ -19,10 +19,44 @@ async def readyz():
 
 @app.post("/api/v1/runs", response_model=schemas.CreateRunResponse, status_code=status.HTTP_202_ACCEPTED)
 async def create_run(request: schemas.CreateRunRequest, db: AsyncSession = Depends(get_db)):
-    # TODO: Validate fix parent, store run in DB, enqueue to arq
-    # For now, return mock accepted response
-    from uuid import uuid4
-    return schemas.CreateRunResponse(id=uuid4(), status="queued")
+    # Find or create Repo
+    from sqlalchemy import select
+    from . import models
+    import datetime
+    
+    repo_stmt = select(models.Repo).where(models.Repo.full_name == request.repo)
+    result = await db.execute(repo_stmt)
+    repo = result.scalars().first()
+    
+    if not repo:
+        repo = models.Repo(full_name=request.repo, default_branch="main", ecosystem="auto")
+        db.add(repo)
+        await db.flush()
+        
+    # Determine sha/url
+    fix_sha = request.fix.sha or "unknown"
+    parent_sha = "unknown"
+    pr_url = request.fix.url if request.fix.type == "pr" else None
+    
+    # Create the run
+    new_run = models.Run(
+        repo_id=repo.id,
+        source="web",
+        fix_sha=fix_sha,
+        parent_sha=parent_sha,
+        status=models.RunStatus.queued,
+        pr_url=pr_url,
+        trace_redacted=request.trace,
+        logs_redacted=request.logs,
+        started_at=datetime.datetime.utcnow()
+    )
+    
+    db.add(new_run)
+    await db.commit()
+    await db.refresh(new_run)
+    
+    # TODO: enqueue to arq
+    return schemas.CreateRunResponse(id=new_run.id, status="queued")
 
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload

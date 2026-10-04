@@ -15,11 +15,35 @@ export default function NewRun() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // In a real app, this would POST to /api/v1/runs
-    // For now, mock a successful submission and redirect
-    setTimeout(() => {
-      router.push("/runs/mock-id");
-    }, 1000);
+    try {
+      const type = fixRef.includes("pull") ? "pr" : "commit";
+      let sha = type === "commit" ? fixRef : undefined;
+      let url = type === "pr" ? fixRef : undefined;
+      // Note: for production, API_URL should be set in .env.local and exposed or rewrites should be used
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+      
+      const res = await fetch(`${apiUrl}/api/v1/runs`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          repo,
+          fix: { type, sha, url },
+          trace,
+          logs: logs || undefined
+        })
+      });
+      
+      if (!res.ok) {
+        throw new Error(`API error: ${res.statusText}`);
+      }
+      
+      const data = await res.json();
+      router.push(`/runs/${data.id}`);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to start run. Please ensure backend is running.");
+      setIsSubmitting(false);
+    }
   };
 
   return (
