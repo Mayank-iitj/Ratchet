@@ -109,9 +109,9 @@ async def get_run(run_id: UUID, db: AsyncSession = Depends(get_db)):
         started_at=run.started_at,
         created_at=run.created_at,
         pr_url=run.pr_url,
-        error_message=run.discard_reason or "KeyError when a subscription has no plan_id", 
-        parent_fail_log=run.logs_redacted or "tests/regression/test_x.py::test_y\nE   KeyError: 'plan_id'\napp/billing.py:88  charge()\nran 5× identical",
-        fix_pass_log="tests/regression/test_x.py::test_y\n1 passed in 0.04s\n\nran 5× identical"
+        error_message=run.discard_reason or "Pending execution...", 
+        parent_fail_log=run.trace_redacted or "",
+        fix_pass_log=run.logs_redacted or ""
     )
 
 import hmac
