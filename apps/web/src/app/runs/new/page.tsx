@@ -11,6 +11,14 @@ export default function NewRun() {
   const [logs, setLogs] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const handleFixRefChange = (val: string) => {
+    setFixRef(val);
+    const match = val.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+    if (match) {
+      setRepo(`${match[1]}/${match[2]}`);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -78,7 +86,7 @@ export default function NewRun() {
               placeholder="https://github.com/owner/repo/pull/123 or commit SHA" 
               required
               value={fixRef}
-              onChange={e => setFixRef(e.target.value)}
+              onChange={e => handleFixRefChange(e.target.value)}
               className="w-full bg-panel border border-line rounded-control px-3 py-2 text-bone focus:outline-none focus:border-magenta focus:ring-1 focus:ring-magenta" 
             />
             <p className="text-small text-mute">The commit or merged PR that fixed the incident.</p>
