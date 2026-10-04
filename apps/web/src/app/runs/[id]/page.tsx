@@ -17,8 +17,8 @@ interface RunDetail {
 }
 
 async function getRun(id: string): Promise<RunDetail | null> {
-  // Use localhost in development. In production, this would use an environment variable.
-  const apiUrl = process.env.API_URL || "http://127.0.0.1:8000";
+  // Use localhost in development. In production, this uses the same env var as the client.
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
   try {
     const res = await fetch(`${apiUrl}/api/v1/runs/${id}`, { cache: 'no-store' });
     if (!res.ok) return null;

@@ -2,7 +2,7 @@ services:
   - type: web
     name: ratchet-api
     env: python
-    buildCommand: "pip install -r requirements.txt"
+    buildCommand: "pip install -r requirements.txt && alembic upgrade head"
     startCommand: "uvicorn apps.api.ratchet_api.main:app --host 0.0.0.0 --port $PORT"
     envVars:
       - key: DATABASE_URL
@@ -26,7 +26,7 @@ services:
   - type: worker
     name: ratchet-worker
     env: python
-    buildCommand: "pip install -r requirements.txt"
+    buildCommand: "pip install -r requirements.txt && alembic upgrade head"
     startCommand: "arq apps.api.ratchet_api.worker.WorkerSettings"
     envVars:
       - key: DATABASE_URL
