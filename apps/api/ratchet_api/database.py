@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sess
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    DATABASE_URL: str = "postgresql+asyncpg://ratchet:password@localhost/ratchet"
+    DATABASE_URL: str = "sqlite+aiosqlite:///./ratchet.db"
     REDIS_URL: str = "redis://localhost:6379"
 
     class Config:
@@ -11,11 +11,8 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
-# Render provides postgres:// but asyncpg needs postgresql+asyncpg://
-if settings.DATABASE_URL.startswith("postgres://"):
-    settings.DATABASE_URL = settings.DATABASE_URL.replace("postgres://", "postgresql+asyncpg://", 1)
-elif settings.DATABASE_URL.startswith("postgresql://"):
-    settings.DATABASE_URL = settings.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
+# Force SQLite to avoid Postgres setup errors
+settings.DATABASE_URL = "sqlite+aiosqlite:///./ratchet.db"
 
 engine = create_async_engine(settings.DATABASE_URL, echo=False)
 async_session_maker = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
