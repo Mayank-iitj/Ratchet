@@ -22,6 +22,12 @@ services:
         sync: false
       - key: ANTHROPIC_API_KEY
         sync: false
+      - key: GITHUB_APP_ID
+        sync: false
+      - key: GITHUB_PRIVATE_KEY
+        sync: false
+      - key: GITHUB_WEBHOOK_SECRET
+        sync: false
 
   - type: worker
     name: ratchet-worker
@@ -45,6 +51,12 @@ services:
       - key: GITHUB_TOKEN
         sync: false
       - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: GITHUB_APP_ID
+        sync: false
+      - key: GITHUB_PRIVATE_KEY
+        sync: false
+      - key: GITHUB_WEBHOOK_SECRET
         sync: false
 
   - type: redis
